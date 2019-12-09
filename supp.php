@@ -5,7 +5,7 @@ $number=$_POST['number'];
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "web";
+$dbname = "livraisonb";
 
 
 // Create connection

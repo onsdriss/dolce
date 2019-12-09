@@ -19,7 +19,6 @@
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
-  <link href="css/checkout.css" rel="stylesheet">
 
 </head>
 
@@ -126,7 +125,7 @@
 	  <li class="nav-item">
         <a class="nav-link" href="livraison.html">
           <i class="fas fa-fw fa-table"></i>
-          <span>Livraison/Livreurs</span></a>
+          <span>Livraison</span></a>
       </li>
 	  
 	
@@ -141,69 +140,53 @@
           <li class="breadcrumb-item">
             <a href="#">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active">Modifier</li>
+          <li class="breadcrumb-item active">Charts</li>
         </ol>
 
-        <!-- Liste des livraisons Example-->
+        <!-- Area Chart Example-->
         <div class="card mb-3">
           <div class="card-header">
             <i class="fas fa-chart-area"></i>
-            Gerer les Livraisons:</div>
-<div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                
-                  <tr>
-		<td><form method="POST" action="afficher.php" name="f1">
+            Area Chart Example</div>
           <div class="card-body">
-           <center><button class="submit check_out" >Afficher la liste des livraisons</button></center>
+            <canvas id="myAreaChart" width="100%" height="30"></canvas>
           </div>
-          
+          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
         </div>
-		</form>
-		</td>
-		
-		<td><form method="POST" action="" name="f1">
-          <div class="card-body">
-           <center><button class="submit check_out" >Afficher la liste des livreurs</button></center>
+
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="card mb-3">
+              <div class="card-header">
+                <i class="fas fa-chart-bar"></i>
+                Bar Chart Example</div>
+              <div class="card-body">
+                <canvas id="myBarChart" width="100%" height="50"></canvas>
+              </div>
+              <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+            </div>
           </div>
-         
-        </div>
-		</form>
-		</td>
-		
-		</tr>
-		
-		<tr>
-		<td><form method="POST" action="ajout1.php" name="f1">
-          <div class="card-body">
-           <center><button class="submit check_out" >Ajouter une livraison</button></center>
+          <div class="col-lg-4">
+            <div class="card mb-3">
+              <div class="card-header">
+                <i class="fas fa-chart-pie"></i>
+                Pie Chart Example</div>
+              <div class="card-body">
+                <canvas id="myPieChart" width="100%" height="100"></canvas>
+              </div>
+              <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+            </div>
           </div>
-          
         </div>
-		</form>
-		</td>
-		
-		<td><form method="POST" action="" name="f1">
-          <div class="card-body">
-           <center><button class="submit check_out" >Ajouter un livreur</button></center>
-          </div>
-         
-        </div>
-		</form>
-		</td>
-		
-		</tr>
-		
-		</table>
-		</div>
-		
-		
+
+        <p class="small text-center text-muted my-5">
+          <em>More chart examples coming soon...</em>
+        </p>
 
       </div>
-	   <!-- /.container-fluid -->
+      <!-- /.container-fluid -->
 
-      
+     
 
     </div>
     <!-- /.content-wrapper -->
@@ -253,5 +236,83 @@
   <script src="js/demo/chart-bar-demo.js"></script>
   <script src="js/demo/chart-pie-demo.js"></script>
 
+
+
+
+<!------------------------------------------------------------------------->        
+                  
+
+
+  <form method="get" action="afficherChef.php">
+  <input type="text" name="search_key" placeholder="chercher..." />
+  <input type="submit"  value="chercher" placeholder="chercher..." class="btn btn-default btn-primary" />
+  </form>
+                      
+<?php
+include('../Core/livraisonCore.php');
+
+$livraisonCore= new livraisonCore();
+
+
+
+
+if (isset($_GET['search_key']))
+{
+$listeevent=$livraisonCore->recherchechef($_GET['search_key']);
+}
+else
+{
+$listeevent=$livraisonCore->affiche_return(); 
+}
+?>
+                                                                                              
+                      
+    
+                          
+                          
+                          <table class="table table-striped table-advance table-hover">
+                           <tbody>
+                              <tr>
+                                 <th><i class="icon_profile"></i> id</th>
+                                 <th><i class="icon_calendar"></i>number</th>
+                                 <th><i class="icon_mail_alt"></i> town</th>
+                                 <th><i class="icon_profile"></i>adresse</th>
+                                  <th><i class="icon_profile"></i>name  </th>
+                                  <th><i class="icon_profile"></i>reference</th>
+                                  <th><i class="icon_profile"></i>datel</th>
+                                  
+                                    
+                              </tr>
+                         </tbody>
+                          
+          
+    <?php
+    while ($donne=$listeevent->fetch())
+    {
+    ?>
+    <tbody> 
+    <tr>     
+    <td><?php echo $donne['id'] ?></td>
+    <td><?php echo $donne['number'] ?></td>
+    <td><?php echo $donne['town'] ?></td>
+    <td><?php echo $donne['adresse']?></td>
+    <td><?php echo $donne['name']?></td>
+	<td><?php echo $donne['ref']?></td>
+	<td><?php echo $donne['datel']?></td>
+    
+    </form></tr>
+	</tbody>
+      <?php
+    }
+    ?>        
+ </table>
+
+ 
+  
 </body>
 </html>
+
+
+
+
+

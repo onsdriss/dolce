@@ -1,63 +1,11 @@
-<?php
-//Database Connection
-include('../Core/config.php');
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "web";
-
-
-// Create connection
-$conn = mysqli_connect($servername, $username, $password, $dbname);
-//Get ID from Database
-if(isset($_GET['edit_id'])){
- $sql = "SELECT * FROM livraison WHERE id =" .$_GET['edit_id'];
- $result = mysqli_query($conn, $sql);
- $donne = mysqli_fetch_array($result);
-}
-//Update Information
-if(isset($_POST['btn-update'])){
- $id = $_POST['id'];
- $number = $_POST['number'];
- $town = $_POST['town'];
- $adresse = $_POST['adresse'];
- $name = $_POST['name'];
- $ref = $_POST['ref'];
- 
- 
- 
- $update = "UPDATE livraison SET id='$id', number='$number',town='$town',adresse='$adresse',name='$name',ref='$ref' WHERE id=". $_GET['edit_id'];
- $up = mysqli_query($conn, $update);
- if(!isset($sql)){
- die ("Error $sql" .mysqli_connect_error());
- }
- else
- {
- header("location: afficher.php");
- }
-}
-?>
-<style>
-table {
-border-collapse: collapse;
-width: 100%;
-color: black;
-font-family: arial;
-font-size: 15px;
-text-align: left;
-}
-th {
-background-color: #588c7e;
-color: white;
-}
-tr:nth-child(even) {background-color: #f2f2f2}
-</style>
-<!--Create Edit form -->
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-<link href="afficher.css" rel="stylesheet" type="text/css" >
+	<title></title>
+	<script src="affiche.js"></script>
+	<link href="afficher.css" rel="stylesheet" type="text/css" >
+	 <script src="affiche.js"></script>
+  <link href="afficher.css" rel="stylesheet" type="text/css" >
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -83,8 +31,6 @@ tr:nth-child(even) {background-color: #f2f2f2}
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
       <i class="fas fa-bars"></i>
     </button>
-
-	
 
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto ml-md-0">
@@ -137,6 +83,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
           <span>Dashboard</span>
         </a>
       </li>
+	  
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-folder"></i>
@@ -169,62 +116,96 @@ tr:nth-child(even) {background-color: #f2f2f2}
           <i class="fas fa-fw fa-table"></i>
           <span>Livraison</span></a>
       </li>
+	  <li class="nav-item">
+        <a class="nav-link" href="reclamation.php">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Reclamation</span></a>
+      </li>
 	  
     </ul>
 
     <div id="content-wrapper">
 
       <div class="container-fluid">
-	  <!-- Breadcrumbs-->
+
+	
+	
+  <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
             <a href="#">Dashboard</a>
           </li>
           <li class="breadcrumb-item active">Livraison</li>
         </ol>
+		<style>
+table {
+border-collapse: collapse;
+width: 100%;
+color: black;
+font-family: arial;
+font-size: 20px;
+text-align: left;
+}
+th {
+background-color: #588c7e;
+color: white;
+}
+tr:nth-child(even) {background-color: #f2f2f2}
+</style>
+<!-------------------------------------------------------------------------------------->
+<center><h1 class="nav-link">Liste des Reclamations:</h1></center>
+	<?php
+
+	    include('../Core/reclamationCore.php');
+
+		$reclamationCore=new reclamationCore();
+		$listeLiv= $reclamationCore->affiche_return();
+	?>
+		
+<center><table border="4">
+	
+	<tr>
+	
+		<th class="choix">Name</th>
+		<th class="choix">Reclamation</th>
+		<th class="choix">Supprimer</th>
+	</tr>
+	
 
 	
-<center><form method="POST"></center>
-<center><h2>Modifier les informations des livraisons:</h2></center>
-<center>
-<table border="4">
+	<?php
+		while($donne = $listeLiv->fetch())
+		{
+	?>
+	    <tr>   
+           
+			<td><?php echo $donne['name'];?></td>
+			<td><?php echo $donne['rec'];?></td>
+		
+		
+	<form method="POST" action="supprimer2.php">
+    <td><input type="submit" name="supprimer" class="btn btn-danger" value="supprimer">
+    <input type="hidden" value="<?php echo $donne['name'];?>" name="name">
+    </td>
+    </form>
+		</tr>
+		
+			
+    <?php
+		}
+		
+            
+	?>
 
+</table>
 
-<tr>
-<th>Id:  </th>
-<th>Number: </th>
-<th>Town:</th>
-<th>Adresse:</th>
-<th>Name:  </th>
-<th>Reference:  </th>
-<th>Date livraison:  </th>
-</tr>
-<tr>
-<td><input type="text" name="id" placeholder="id" value="<?php echo $donne['id']; ?>"></td>
-<td><input type="text" name="number" placeholder="Number" value="<?php echo $donne['number']; ?>"></td>
-<td><input type="text" name="town" placeholder="Town" value="<?php echo $donne['town']; ?>"></td>
-<td><input type="text" name="adresse" placeholder="Adresse" value="<?php echo $donne['adresse']; ?>"></td>
-<td> <input type="text" name="name" placeholder="Name" value="<?php echo $donne['name']; ?>"></td>
-<td> <input type="text" name="ref" placeholder="Ref" value="<?php echo $donne['ref']; ?>"></td>
-<td> <input type="text" name="datel" placeholder="Ref" value="<?php echo $donne['datel']; ?>"></td>
-
-</tr>
-</table></br></center>
-
-
-<center><button type="submit" name="btn-update" id="btn-update" onClick="update()" class="btn btn-secondary"><strong>Modifier</strong></button></center></br>
-<center><a href="afficher.php"><button type="button" value="button" class="btn btn-secondary">Cancel</button></a></center></br>
-
+<form method="POST" action="livraison.html" name="f4">
+<input type="submit" value="ok" onclick="test1()" class="bouton1" />
 </form>
+<form method="POST" action="livraison.html" name="f4">
+<input type="submit" value="Retour"  class="bouton1" />
+</form>
+</center>
 
-<!-- Alert for Updating -->
-<script>
-function update(){
- var x;
- if(confirm("Updated data Sucessfully") == true){
- x= "update";
- }
-}
-</script>
 </body>
 </html>
