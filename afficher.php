@@ -1,8 +1,11 @@
+
 <!DOCTYPE html>
 <html>
 <head>
 	<title></title>
 	<script src="affiche.js"></script>
+	<script src="test.js"></script>
+	<script src="test1.js"></script>
 	<link href="afficher.css" rel="stylesheet" type="text/css" >
 	<script src="livraison.js"></script>
 <meta charset="UTF-8">
@@ -40,6 +43,39 @@
       <!--//stylesheets-->
       <link href="//fonts.googleapis.com/css?family=Sunflower:500,700" rel="stylesheet">
       <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+	  <style>
+	  .content-table{
+		  border-collapse:collapse;
+		  margin:25px 0;
+		  font-size:0.9em;
+		  min-width:400px;
+		  border-radius:5px 5px 0 0;
+		  overflow:hidden;
+		  box-shadow: 0 0 20px rgba(0,0,0,0.15);
+	  }
+	  .content-table thead tr{
+		  background-color:	#e35d6a;
+		  color:#fffff;
+		  text-align:left;7font-weight:bold;
+	  }
+	  .content-table th,
+	  .content-table td{
+		  padding:12px 15px;
+	  }
+	  .content-table tbody tr{
+		  border-bottom:1px solid #dddddd;
+	  }
+	  .content-table tbody tr:nth-of-type(even){
+		  background-color:#f3f3f3;
+	  }
+	  .content-table tbody tr:last-of-type{
+		  border-bottom:2px solid #e35d6a;
+	  }
+	  .content-table tbody tr.active-row{
+		  font-weight:bold;
+		  color:#e35d6a;
+	  }
+	  </style>
 </head>
 
     <body>
@@ -168,7 +204,7 @@
  <div class="card-body">
 
   <div class="card-header">
-	<h2><u>Liste des livraison:</u></h2>
+	<h2 class="nav-link">Liste des livraison:</h2>
 	
  
 	<?php
@@ -180,20 +216,26 @@
 		
 	?>
 		
-<table border="4">
+<table class="content-table">
+<thead>
  
-	<tr>
+	<tr class="active-row">
 	    <th class="choix" name="id">id</th>
 		<th class="choix" >Number</th>
 		<th class="choix">Town</th>
 		<th class="choix">Adresse</th>
 		<th class="choix">Name</th>
 		<th class="choix">Reference</th>
-	
-		<td>Modifier</td>
+		<th class="choix">Date</th>
+		<th class="choix">Cost</th>
+		<th>Reclamer</th>
+	    <th>Modifier</th>
 		<td></td>
+		<td></td>
+		<td></td>
+		
 	</tr>
-	
+</thead>	
 	
 	
 	
@@ -202,36 +244,102 @@
 	<?php
 		while($donne = $listeLiv->fetch())
 		{
+		$today=date('Y/m/d');
+		$date=$donne['datel'];
+		$td=strtotime($today);
+	    $d=strtotime($date);
+		
+		
+		if($td>=$d)
+		{
 	?>
-	    <tr>   
+	<tbody>
+	    <tr >   
             <td><?php echo $donne['id'];?></td>		
 			<td><?php echo $donne['number'];?></td>
 			<td><?php echo $donne['town'];?></td>
 			<td><?php echo $donne['adresse'];?></td>
 			<td><?php echo $donne['name'];?></td>
 			<td><?php echo $donne['ref'];?></td>
+			<td><?php echo $donne['datel'];?></td>
+			<?php
+			if($donne['town']=='tunis' || $donne['town']=='tunisia')
+			{
+			?>
+			<td><?php echo '10.00$';?></td>
+			<?php 
+			}
+			else
+			{
+			?>
+			<td><?php echo '30.00$';?></td>
+			<?php 
+			}
+			?>
+		<form action='reclamer.php' method="POST">
+		<td><button value="Reclamer" class='btn btn-danger'/><strong>Reclamer</strong></td>
+		</form>
+		<td><a class="btn btn-success" href="edit.php?edit_id=<?php echo $donne['id']; ?>" alt="edit" ><strong>Modifier</strong></a></td>
+		<td>
+	    Est-ce que votre livraison a éte bien recue?
+		</td>
 		
-		<td><a href="edit.php?edit_id=<?php echo $donne['id']; ?>" alt="edit" ><strong>Modifier</strong></a></td>
+		<td><input type="submit" value="Oui" class='btn btn-info' onclick="test2()" /></td>
+		
+		<td>
+		<form action="oui.php">
+		<input type="submit" value="Non" class='btn btn-info' onclick="test1()"/>
+		</form>
 	
-		
-	<form method="POST" action="supprimer.php">
-    <td><input type="submit" name="supprimer" value="supprimer">
-    <input type="hidden" value="<?php echo $donne['id'];?>" name="id">
-
-    </td>
-    </form>
+	    </td>
+	
 	</tr>
 	
 	
 			
     <?php
-		}      
+		}
+        else
+        {
 	?>
-
-
+			</tbody>
+	    <tr >   
+            <td><?php echo $donne['id'];?></td>		
+			<td><?php echo $donne['number'];?></td>
+			<td><?php echo $donne['town'];?></td>
+			<td><?php echo $donne['adresse'];?></td>
+			<td><?php echo $donne['name'];?></td>
+			<td><?php echo $donne['ref'];?></td>
+			<td><?php echo $donne['datel'];?></td>
+			<?php
+			if($donne['town']=='tunis' || $donne['town']=='tunisia')
+			{
+			?>
+			<td><?php echo '10.00$';?></td>
+			<?php 
+			}
+			else
+			{
+			?>
+			<td><?php echo '30.00$';?></td>
+			<?php 
+			}
+			?>
+		<form action='reclamer.php' method="POST">
+		<td><button value="Reclamer" class='btn btn-danger'/><strong>Reclamer</strong></td>
+		</form>
+		<td><a class="btn btn-success" href="edit.php?edit_id=<?php echo $donne['id']; ?>" alt="edit" ><strong>Modifier</strong></a></td>
+		
+<?php		
+		}			
+		}
+?>
+		
+</tbody>
+</tr>
 </table>
 <form method="POST" action="confirmer.php" name="f4">
-<input type="submit" value="ok" onclick="test1()" class="bouton1" />
+<input type="submit" value="ok" onclick="test()" class="bouton1" />
 </form>
 
 	</div>

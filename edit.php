@@ -24,8 +24,9 @@ if(isset($_POST['btn-update'])){
  $adresse = $_POST['adresse'];
  $name = $_POST['name'];
  $ref = $_POST['ref'];
+ $datel = $_POST['datel'];
  
- $update = "UPDATE livraison SET id='$id', number='$number',town='$town',adresse='$adresse',name='$name',ref='$ref' WHERE id=". $_GET['edit_id'];
+ $update = "UPDATE livraison SET id='$id', number='$number',town='$town',adresse='$adresse',name='$name',ref='$ref',datel='$datel' WHERE id=". $_GET['edit_id'];
  $up = mysqli_query($conn, $update);
  if(!isset($sql)){
  die ("Error $sql" .mysqli_connect_error());
@@ -80,6 +81,39 @@ if(isset($_POST['btn-update'])){
       <!--//stylesheets-->
       <link href="//fonts.googleapis.com/css?family=Sunflower:500,700" rel="stylesheet">
       <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+	  <style>
+	  .content-table{
+		  border-collapse:collapse;
+		  margin:25px 0;
+		  font-size:0.9em;
+		  min-width:400px;
+		  border-radius:5px 5px 0 0;
+		  overflow:hidden;
+		  box-shadow: 0 0 20px rgba(0,0,0,0.15);
+	  }
+	  .content-table thead tr{
+		  background-color:	#e35d6a;
+		  color:#fffff;
+		  text-align:left;7font-weight:bold;
+	  }
+	  .content-table th,
+	  .content-table td{
+		  padding:12px 15px;
+	  }
+	  .content-table tbody tr{
+		  border-bottom:1px solid #dddddd;
+	  }
+	  .content-table tbody tr:nth-of-type(even){
+		  background-color:#f3f3f3;
+	  }
+	  .content-table tbody tr:last-of-type{
+		  border-bottom:2px solid #e35d6a;
+	  }
+	  .content-table tbody tr.active-row{
+		  font-weight:bold;
+		  color:#e35d6a;
+	  }
+	  </style>
 </head>
 <body>
 <!--headder-->
@@ -204,23 +238,42 @@ if(isset($_POST['btn-update'])){
 
   <div class="card-header"> 
 <form method="POST">
-<center><h2><u>Edit Employee Information</u></h2></center>
-<center><table border="2">
+<center><h2 class="nav-link">Edit Employee Information</h2></center>
+<center><table>
 <tr>
 <td>
-<table>
-<tr><th>Id:</th><td><input type="text" name="id" placeholder="id" value="<?php echo $donne['id']; ?>"></td></tr>
-<tr><th>Number:</th><td><input type="text" name="number" placeholder="Number" value="<?php echo $donne['number']; ?>"></td></tr>
-<tr><th>Town:</th><td><input type="text" name="town" placeholder="Town" value="<?php echo $donne['town']; ?>"></td></tr>
-<tr><th>Adresse:</th><td><input type="text" name="adresse" placeholder="Adresse" value="<?php echo $donne['adresse']; ?>"></td></tr>
-<tr><th>Name:</th><td><input type="text" name="name" placeholder="Name" value="<?php echo $donne['name']; ?>"></td></tr>
-<tr><th>Reference:</th><td><input type="text" name="ref" placeholder="Reference" value="<?php echo $donne['ref']; ?>"></td></tr>
+<table class="content-table">
+
+<thead>
+<tr>
+<th>Id:</th>
+<td><input type="text" name="id" placeholder="id" value="<?php echo $donne['id']; ?>"></td>
+</tr>
+<tr>
+<th>Number:</th>
+<td><input type="text" name="number" placeholder="Number" value="<?php echo $donne['number']; ?>"></td>
+</tr>
+<tr>
+<th>Town:</th><td><input type="text" name="town" placeholder="Town" value="<?php echo $donne['town']; ?>"></td>
+</tr>
+<tr>
+<th>Adresse:</th><td><input type="text" name="adresse" placeholder="Adresse" value="<?php echo $donne['adresse']; ?>"></td>
+</tr>
+<tr>
+<th>Name:</th><td><input type="text" name="name" placeholder="Name" value="<?php echo $donne['name']; ?>"></td>
+</tr>
+<tr>
+<th>Reference:</th><td><input type="text" name="ref" placeholder="Reference" value="<?php echo $donne['ref']; ?>"></td>
+</tr>
+<tr>
+<th>Date:</th><td><input type="text" name="datel" placeholder="Date" value="<?php echo $donne['datel']; ?>"></td></tr></thead>
+
 </td>
 </tr>
 </table>
 </table></center>
-<center><button type="submit" name="btn-update" id="btn-update" onClick="update()"><strong>Update</strong></button>
-<a href="afficher.php"><button type="button" value="button">Cancel</button></a></center>
+<center><button type="submit" name="btn-update" id="btn-update" onClick="update()" class="bouton1"><strong>Update</strong></button>
+<a href="afficher.php"><button type="button" value="button" class="bouton1">Cancel</button></a></center>
 
 </form>
 
